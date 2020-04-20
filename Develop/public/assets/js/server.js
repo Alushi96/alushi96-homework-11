@@ -27,7 +27,6 @@ app.get("/assets/css/styles.css", function (req, res) {
 })
 
 app.get("/api/notes", function (req, res) {
-    console.log(notes);
     return res.json(notes);
 })
 
@@ -73,8 +72,27 @@ app.post("/api/notes", function (req, res) {
     
 })
 
-app.delete("/api/notes/", function (req, res) {
-    console.log("Deleted!");
+app.delete(`/api/notes/:id`, function (req, res) {
+    console.log(req.params.id);
+    fs.readFile("../../../db/db.json", 'utf-8', function(err, data) {
+        if (err) throw err
+        var arrayOfObjects = JSON.parse(data);
+        for(var i = 0; i < arrayOfObjects.length; i++) {
+            if(arrayOfObjects[i].id == req.params.id) {
+                arrayOfObjects.splice(i, 1);
+                break;
+            }
+        }
+        notes = arrayOfObjects;
+        
+
+        fs.writeFile("../../../db/db.json", JSON.stringify(arrayOfObjects), "utf-8", function(err) {
+            if (err) throw err
+            console.log("Deleted!");
+            res.json(true);
+        });
+    });
+    
 });
 
 app.listen(port, function() {
