@@ -1,5 +1,8 @@
 const express = require("express");
 const path = require("path");
+const fs = require("fs");
+var notedata = fs.readFileSync("../../../db/db.json");
+var notes = JSON.parse(notedata);
 
 const app = express();
 const port = process.env.PORT || 8080;
@@ -24,14 +27,19 @@ app.get("/assets/css/styles.css", function (req, res) {
 })
 
 app.get("/api/notes", function (req, res) {
-    res.json("../../../db/db.json");
-    console.log(req.body);
+    console.log(notes);
+    return res.json(notes);
 })
 
 app.post("/api/notes", function (req, res) {
-    console.log(req.body);
+
 })
+
+app.delete("/api/notes/undefined", function (req, res) {
+    console.log("Deleted!");
+});
 
 app.listen(port, function() {
     console.log(`App Server is listening on PORT: ${port}`);
 });
+
