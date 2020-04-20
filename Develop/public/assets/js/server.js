@@ -38,6 +38,30 @@ app.post("/api/notes", function (req, res) {
 
         var arrayOfObjects = JSON.parse(data);
         arrayOfObjects.push(req.body);
+
+        var iterator = 1;
+
+        function addIdentifier(target){
+        target.id = iterator;
+        iterator++;
+        }
+
+        function loop(arrayOfObjects){
+            for(var i in arrayOfObjects){
+                var c = arrayOfObjects[i];        
+
+                if(typeof c === 'object'){
+
+                    if(c.length === undefined){
+
+                        addIdentifier(c);
+
+                    };
+                    loop(c);
+                };
+            };
+        };
+        loop(arrayOfObjects);
         notes = arrayOfObjects;
 
     fs.writeFile("../../../db/db.json", JSON.stringify(arrayOfObjects), "utf-8", function(err) {
@@ -49,7 +73,7 @@ app.post("/api/notes", function (req, res) {
     
 })
 
-app.delete("/api/notes/undefined", function (req, res) {
+app.delete("/api/notes/", function (req, res) {
     console.log("Deleted!");
 });
 
