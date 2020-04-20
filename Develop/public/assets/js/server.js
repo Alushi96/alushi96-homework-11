@@ -33,6 +33,20 @@ app.get("/api/notes", function (req, res) {
 
 app.post("/api/notes", function (req, res) {
 
+    fs.readFile("../../../db/db.json", 'utf-8', function(err, data) {
+        if (err) throw err
+
+        var arrayOfObjects = JSON.parse(data);
+        arrayOfObjects.push(req.body);
+        notes = arrayOfObjects;
+
+    fs.writeFile("../../../db/db.json", JSON.stringify(arrayOfObjects), "utf-8", function(err) {
+        if (err) throw err
+        console.log("Written!");
+        res.json(true);
+    });
+    });
+    
 })
 
 app.delete("/api/notes/undefined", function (req, res) {
