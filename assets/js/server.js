@@ -1,7 +1,7 @@
 const express = require("express");
 const path = require("path");
 const fs = require("fs");
-var notedata = fs.readFileSync("../../../db/db.json");
+var notedata = fs.readFileSync("../../db/db.json");
 var notes = JSON.parse(notedata);
 
 const app = express();
@@ -32,7 +32,7 @@ app.get("/api/notes", function (req, res) {
 
 app.post("/api/notes", function (req, res) {
 
-    fs.readFile("../../../db/db.json", 'utf-8', function(err, data) {
+    fs.readFile("../../db/db.json", 'utf-8', function(err, data) {
         if (err) throw err
 
         var arrayOfObjects = JSON.parse(data);
@@ -63,7 +63,7 @@ app.post("/api/notes", function (req, res) {
         loop(arrayOfObjects);
         notes = arrayOfObjects;
 
-        fs.writeFile("../../../db/db.json", JSON.stringify(arrayOfObjects), "utf-8", function(err) {
+        fs.writeFile("../../db/db.json", JSON.stringify(arrayOfObjects), "utf-8", function(err) {
             if (err) throw err
             console.log("Written!");
             res.json(true);
@@ -74,7 +74,7 @@ app.post("/api/notes", function (req, res) {
 
 app.delete(`/api/notes/:id`, function (req, res) {
     console.log(req.params.id);
-    fs.readFile("../../../db/db.json", 'utf-8', function(err, data) {
+    fs.readFile("../../db/db.json", 'utf-8', function(err, data) {
         if (err) throw err
         var arrayOfObjects = JSON.parse(data);
         for(var i = 0; i < arrayOfObjects.length; i++) {
@@ -86,7 +86,7 @@ app.delete(`/api/notes/:id`, function (req, res) {
         notes = arrayOfObjects;
         
 
-        fs.writeFile("../../../db/db.json", JSON.stringify(arrayOfObjects), "utf-8", function(err) {
+        fs.writeFile("../../db/db.json", JSON.stringify(arrayOfObjects), "utf-8", function(err) {
             if (err) throw err
             console.log("Deleted!");
             res.json(true);
